@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "## Description",
   "main": "app.js",
+  "engines": {
+    "node": "24.11.1"
+  },
   "scripts": {
     "build": "tsc && cp -r views dist/ && gulp build",
     "build:compile": "tsc",
@@ -35,8 +38,8 @@
     "@companieshouse/structured-logging-node": "^2.0.6",
     "@companieshouse/web-security-node": "^4.4.13",
     "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.56.1",
     "@opentelemetry/api-logs": "^0.207.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.76.0",
     "@opentelemetry/baggage-span-processor": "^0.4.2",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.207.0",
     "@opentelemetry/exporter-metrics-otlp-proto": "^0.207.0",
@@ -44,7 +47,7 @@
     "@opentelemetry/exporter-trace-otlp-proto": "^0.207.0",
     "@opentelemetry/sdk-logs": "^0.207.0",
     "@opentelemetry/sdk-metrics": "^2.2.0",
-    "@opentelemetry/sdk-node": "^0.207.0",
+    "@opentelemetry/sdk-node": "^0.218.0",
     "@opentelemetry/sdk-trace-node": "^2.2.0",
     "axios": "^1.12.2",
     "chokidar": "^3.6.0",
@@ -63,6 +66,7 @@
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
     "@fluffy-spoon/substitute": "~1.116.0",
+    "@types/aws-lambda": "8.10.156",
     "@types/chai": "~4.2.22",
     "@types/chai-as-promised": "~7.1.8",
     "@types/cookie-parser": "~1.4.6",
@@ -70,7 +74,7 @@
     "@types/helmet": "0.0.45",
     "@types/ioredis": "~4.14.8",
     "@types/mocha": "~10.0.6",
-    "@types/node": "~13.9.1",
+    "@types/node": "24.12.4",
     "@types/nunjucks": "~3.1.3",
     "@types/proxyquire": "~1.3.31",
     "@types/sinon": "~7.5.2",
@@ -98,8 +102,8 @@
     "sinon": "~9.0.1",
     "sinon-chai": "~3.5.0",
     "sonarqube-scanner": "^3.5.0",
-    "ts-node": "~8.6.2",
-    "typescript": "^4.1.6",
+    "ts-node": "10.9.2",
+    "typescript": "4.9.5",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
   },
@@ -111,6 +115,7 @@
   },
   "overrides": {
     "glob-parent": "^6.0.2",
-    "msgpack5": "^6.0.2"
+    "msgpack5": "^6.0.2",
+    "serialize-javascript": "7.0.5"
   }
 }
