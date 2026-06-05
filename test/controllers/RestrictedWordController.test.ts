@@ -124,7 +124,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getWordViewName, Arg.is(options => {
+                .render(getWordViewName, Arg.is((options: any) => {
 
                     expect(options.setSuperRestricted).to.equal("true");
 
@@ -143,7 +143,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getWordViewName, Arg.is(options => {
+                .render(getWordViewName, Arg.is((options: any) => {
 
                     expect(options.setSuperRestricted).to.equal("false");
 
@@ -162,7 +162,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getWordViewName, Arg.is(options => {
+                .render(getWordViewName, Arg.is((options: any) => {
 
                     expect(options.setCategories).to.equal("true");
 
@@ -232,7 +232,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render("word", Arg.is(options => {
+                .render("word", Arg.is((options: any) => {
 
                     expect(options.wordHistory.length).to.equal(2);
                     expect(options.wordCategoryHistory.length).to.equal(2);
@@ -303,7 +303,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .redirect(Arg.is(options => {
+                .redirect(Arg.is((options: any) => {
                     expect(options).to.equal(`${mockConfig.baseUrl}/${mockConfig.urlPrefix}/word/${testId}?setSuperRestricted=true`);
                     return true;
                 }));
@@ -327,7 +327,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .redirect(Arg.is(options => {
+                .redirect(Arg.is((options: any) => {
                     expect(options).to.equal(`${mockConfig.baseUrl}/${mockConfig.urlPrefix}/word/${testId}?setCategories=true`);
                     return true;
                 }));
@@ -351,7 +351,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .redirect(Arg.is(options => {
+                .redirect(Arg.is((options: any) => {
                     expect(options).to.equal(`${mockConfig.baseUrl}/${mockConfig.urlPrefix}/word/${testId}?setSuperRestricted=true&setCategories=true`);
                     return true;
                 }));
@@ -373,7 +373,7 @@ describe("RestrictedWordController", function () {
             await restrictedWordController.postUpdateWord(mockRequest, mockResponse);
             mockResponse
                 .received()
-                .redirect(Arg.is(options => {
+                .redirect(Arg.is((options: any) => {
                     expect(options).to.equal(`${mockConfig.baseUrl}/${mockConfig.urlPrefix}/word/${testId}?setSuperRestricted=true`);
                     return true;
                 }));
@@ -391,7 +391,7 @@ describe("RestrictedWordController", function () {
             await restrictedWordController.postUpdateWord(mockRequest, mockResponse);
             mockResponse
                 .received()
-                .render(viewName, Arg.is(options => {
+                .render(viewName, Arg.is((options: any) => {
 
                     const expectedErrors = [{
                         text: `Provided id: (${invalidId}) is not valid. Must be alpha numeric.`
@@ -423,7 +423,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(viewName, Arg.is(options => {
+                .render(viewName, Arg.is((options: any) => {
 
                     const expectedErrors = [{
                         text: exampleError
@@ -457,7 +457,7 @@ describe("RestrictedWordController", function () {
 
                 mockResponse
                     .received()
-                    .render(viewName, Arg.is(options => {
+                    .render(viewName, Arg.is((options: any) => {
 
                         const expectedErrors = [{
                             text: "No data to update provided in the request, a new super restricted value and/or categories is required."
@@ -482,7 +482,7 @@ describe("RestrictedWordController", function () {
 
                 mockResponse
                     .received()
-                    .render(viewName, Arg.is(options => {
+                    .render(viewName, Arg.is((options: any) => {
 
                         const expectedErrors = [{
                             text: "A changed reason is required when updating categories."
@@ -507,7 +507,7 @@ describe("RestrictedWordController", function () {
 
                 mockResponse
                     .received()
-                    .render(viewName, Arg.is(options => {
+                    .render(viewName, Arg.is((options: any) => {
 
                         const expectedErrors = [{
                             text: "A changed reason is required when updating categories."
@@ -532,7 +532,7 @@ describe("RestrictedWordController", function () {
 
                 mockResponse
                     .received()
-                    .render(viewName, Arg.is(options => {
+                    .render(viewName, Arg.is((options: any) => {
 
                         const expectedErrors = [{
                             text: "No changes have been made."
@@ -573,7 +573,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getAllWordsViewName, Arg.is(options => {
+                .render(getAllWordsViewName, Arg.is((options: any) => {
 
                     expect(options.deletedWord).to.equal(exampleWord1);
                     expect(options.addedWord).to.equal(exampleWord2);
@@ -595,7 +595,7 @@ describe("RestrictedWordController", function () {
 
             mockApiClient
                 .received()
-                .getAllRestrictedWords(Arg.is(options => {
+                .getAllRestrictedWords(Arg.is((options: any) => {
 
                     expect(options.startsWith).to.not.exist;
                     expect(options.contains).to.not.exist;
@@ -606,7 +606,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getAllWordsViewName, Arg.is(options => {
+                .render(getAllWordsViewName, Arg.is((options: any) => {
 
                     expect(options.filterParams.status).to.not.exist;
                     expect(options.filterParams.word).to.be.empty;
@@ -631,7 +631,7 @@ describe("RestrictedWordController", function () {
 
             mockApiClient
                 .received()
-                .getAllRestrictedWords(Arg.is(options => {
+                .getAllRestrictedWords(Arg.is((options: any) => {
 
                     expect(options.startsWith).to.not.exist;
                     expect(options.contains).to.equal(exampleWord1);
@@ -642,7 +642,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getAllWordsViewName, Arg.is(options => {
+                .render(getAllWordsViewName, Arg.is((options: any) => {
 
                     expect(options.filterParams.status).to.equal("Active");
                     expect(options.filterParams.superRestricted).to.equal("Super");
@@ -668,7 +668,7 @@ describe("RestrictedWordController", function () {
 
             mockApiClient
                 .received()
-                .getAllRestrictedWords(Arg.is(options => {
+                .getAllRestrictedWords(Arg.is((options: any) => {
 
                     expect(options.startsWith).to.not.exist;
                     expect(options.contains).to.not.exist;
@@ -679,7 +679,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getAllWordsViewName, Arg.is(options => {
+                .render(getAllWordsViewName, Arg.is((options: any) => {
 
                     expect(options.filterParams.status).to.equal("Deleted");
                     expect(options.filterParams.superRestricted).to.equal("Normal");
@@ -703,7 +703,7 @@ describe("RestrictedWordController", function () {
 
             mockApiClient
                 .received()
-                .getAllRestrictedWords(Arg.is(options => {
+                .getAllRestrictedWords(Arg.is((options: any) => {
                     expect(options.startsWith).to.not.exist;
                     expect(options.contains).to.not.exist;
                     expect(options.categories).to.be.eql(["restricted"]);
@@ -712,7 +712,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getAllWordsViewName, Arg.is(options => {
+                .render(getAllWordsViewName, Arg.is((options: any) => {
                     expect(options.filterParams.categories).to.be.eql(["restricted"]);
                     expect(options.filterParams.status).to.not.exist;
                     expect(options.filterParams.superRestricted).to.not.exist;
@@ -735,7 +735,7 @@ describe("RestrictedWordController", function () {
 
             mockApiClient
                 .received()
-                .getAllRestrictedWords(Arg.is(options => {
+                .getAllRestrictedWords(Arg.is((options: any) => {
                     expect(options.startsWith).to.not.exist;
                     expect(options.contains).to.not.exist;
                     expect(options.categories).to.be.eql(["restricted", "international-orgs-foreign-gov-depts"]);
@@ -744,7 +744,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getAllWordsViewName, Arg.is(options => {
+                .render(getAllWordsViewName, Arg.is((options: any) => {
                     expect(options.filterParams.categories).to.be.eql(["restricted", "international-orgs-foreign-gov-depts"]);
                     expect(options.filterParams.status).to.not.exist;
                     expect(options.filterParams.superRestricted).to.not.exist;
@@ -774,7 +774,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getAllWordsViewName, Arg.is(options => {
+                .render(getAllWordsViewName, Arg.is((options: any) => {
                     expect(options.filterParams.categories).to.not.exist;
                     expect(options.filterParams.status).to.not.exist;
                     expect(options.filterParams.superRestricted).to.not.exist;
@@ -806,7 +806,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getAllWordsViewName, Arg.is(options => {
+                .render(getAllWordsViewName, Arg.is((options: any) => {
 
                     expect(options.words)
                         .to.equal(expectedResults)
@@ -846,7 +846,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(getAllWordsViewName, Arg.is(options => {
+                .render(getAllWordsViewName, Arg.is((options: any) => {
 
                     expect(options.errors)
                         .to.have.length(1)
@@ -927,7 +927,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(createNewWordViewName, Arg.is(options => {
+                .render(createNewWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors)
                         .to.have.length(1)
@@ -959,7 +959,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(createNewWordViewName, Arg.is(options => {
+                .render(createNewWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors)
                         .to.have.length(1)
@@ -988,7 +988,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(createNewWordViewName, Arg.is(options => {
+                .render(createNewWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors)
                         .to.have.length(1)
@@ -1016,7 +1016,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(createNewWordViewName, Arg.is(options => {
+                .render(createNewWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors)
                         .to.have.length(1)
@@ -1048,7 +1048,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render("add-new-word", Arg.is(options => {
+                .render("add-new-word", Arg.is((options: any) => {
 
                     expect(options)
                         .to.deep.equal({
@@ -1108,7 +1108,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(deleteWordViewName, Arg.is(options => {
+                .render(deleteWordViewName, Arg.is((options: any) => {
 
                     expect(options.id).to.equal(exampleId);
                     expect(options.word).to.equal(exampleWord1);
@@ -1136,7 +1136,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(deleteWordViewName, Arg.is(options => {
+                .render(deleteWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors).to.deep.equal(expectedError);
 
@@ -1163,7 +1163,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(deleteWordViewName, Arg.is(options => {
+                .render(deleteWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors).to.deep.equal(expectedError);
 
@@ -1193,7 +1193,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(deleteWordViewName, Arg.is(options => {
+                .render(deleteWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors).to.deep.equal(expectedError);
 
@@ -1218,7 +1218,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(deleteWordViewName, Arg.is(options => {
+                .render(deleteWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors).to.deep.equal(expectedError);
 
@@ -1244,7 +1244,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(deleteWordViewName, Arg.is(options => {
+                .render(deleteWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors).to.deep.equal(expectedError);
 
@@ -1303,7 +1303,7 @@ describe("RestrictedWordController", function () {
 
             mockResponse
                 .received()
-                .render(deleteWordViewName, Arg.is(options => {
+                .render(deleteWordViewName, Arg.is((options: any) => {
 
                     expect(options.errors)
                         .to.have.length(1)

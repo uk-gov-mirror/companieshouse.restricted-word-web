@@ -1,6 +1,5 @@
 import sinon from "sinon";
 import middleware from "../../src/middleware/createCsrfErrorMiddleware";
-import { expect } from "chai";
 import { CsrfError } from "@companieshouse/web-security-node";
 
 const createMockResponse = function () {
@@ -22,12 +21,10 @@ describe("createCsrfErrorMiddleware", function () {
         const response = createMockResponse();
         const mockNext = createMockNext();
 
-        // @ts-expect-error
-        middleware(error, null, response, mockNext);
+        middleware(error, {} as any, response as any, mockNext as any);
 
-        expect(response.status).callCount(0);
-        expect(mockNext)
-            .to.have.been.calledOnceWithExactly(error);
+        sinon.assert.notCalled(response.status);
+        sinon.assert.calledOnceWithExactly(mockNext, error);
     });
 
     it("csrf error", function () {
@@ -36,14 +33,12 @@ describe("createCsrfErrorMiddleware", function () {
         const mockNext = createMockNext();
         response.status.returns(response);
 
-        // @ts-expect-error
-        middleware(error, null, response, mockNext);
+        middleware(error, {} as any, response as any, mockNext as any);
 
-        expect(response.status).calledOnceWithExactly(403);
-        expect(mockNext).callCount(0);
-        expect(response.render)
-            .to.have.been.calledOnceWithExactly("403", {
-                csrfErrors: true
-            });
+        sinon.assert.calledOnceWithExactly(response.status, 403);
+        sinon.assert.notCalled(mockNext);
+        sinon.assert.calledOnceWithExactly(response.render, "403", {
+            csrfErrors: true
+        });
     });
 });
