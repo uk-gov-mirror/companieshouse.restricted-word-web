@@ -1036,7 +1036,7 @@ describe("RestrictedWordController", function () {
 
             mockApiClient
                 .createRestrictedWord(exampleWord1, exampleCreatedReason, exampleCategories, false, false)
-                .returns(Promise.reject({ // eslint-disable-line prefer-promise-reject-errors
+                .returns(Promise.reject({
                     conflictingWords: ["DOG", "CAT"]
                 }));
 

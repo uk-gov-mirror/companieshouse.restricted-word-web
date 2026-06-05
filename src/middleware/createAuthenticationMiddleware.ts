@@ -41,7 +41,7 @@ const createAuthenticationMiddleware = function (): RequestHandler {
                 } else {
                     logger.infoRequest(request, `Signed in user (${request.body.loggedInUserEmail}) does not have the correct permissions`);
 
-                    response.status(404); // eslint-disable-line @typescript-eslint/no-magic-numbers
+                    response.status(404);  
 
                     return response.render("404");
                 }

@@ -6,7 +6,7 @@ class RestrictedWordRouter {
 
     public static create() {
 
-        // eslint-disable-next-line new-cap
+         
         const router = express.Router();
 
         router.get("/", RestrictedWordController.getAllWords);

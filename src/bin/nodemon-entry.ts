@@ -1,7 +1,7 @@
 import "../otel";
 import app from "../app";
 
-// eslint-disable-next-line
+ 
 const PORT = process.env.PORT;
 
 app.set("port", PORT);
