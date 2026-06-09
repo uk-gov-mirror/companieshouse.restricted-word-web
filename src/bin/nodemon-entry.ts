@@ -1,7 +1,6 @@
 import "../otel";
 import app from "../app";
 
- 
 const PORT = process.env.PORT;
 
 app.set("port", PORT);
