@@ -1,7 +1,7 @@
 import AuditEntryDto from "./AuditEntryDto";
 import CategoryAuditEntryDto from "./CategoryAuditEntryDto";
 
-/* eslint-disable camelcase */
+ 
 interface RestrictedWordDto {
     id: string;
     full_word: string;

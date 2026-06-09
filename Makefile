@@ -26,12 +26,12 @@ sonar: build test
 lint:
 	npm run lint
 
-.PHONY: security-check
-security-check:
+.PHONY: dependency-check
+dependency-check:
 	npm audit --audit-level=high
 
 .PHONY: package
-package: init build 
+package: init build
 ifndef version
 	$(error No version given. Aborting)
 endif

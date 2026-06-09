@@ -38,24 +38,39 @@ The following is a list of mandatory environment variables for the service to ru
 
 # Getting Started
 
-Note that `docker_chs` and `chs-dev` below are interchangeable, where the former may be run from any directory and the latter from `docker-chs-development` root.
-
 ## How to Run
 
 For running with Docker:
 
-* Run `docker_chs modules enable word` to enable the module.
-* Run `docker_chs up` to start.
-* Navigate to http://chs.local/admin/restricted-word and sign into CHS using the old/existing admin sign in credentials.
+* Run `chs-dev modules enable word` to enable the module.
+* Run `chs-dev development enable restricted-word-web` to enable development of the module.
+* Run `chs-dev up` to start.
+* Navigate to http://chs.local/admin/restricted-word and sign in to CHS using your CH login identity. e.g. 
+jbloggs@companieshouse.gov.uk.
 
-If you encounter the "Page Not Found" error, then make sure the old/existing administrator sign in credentials in your local Mongo database have the `"restricted-word"` role assigned (see [here](https://companieshouse.atlassian.net/wiki/spaces/IncVal/pages/1516044433/Restricted+Word+Web+admin+tool+Deployment+Notes) for more details)
+If you encounter the "Page Not Found" error, then you will need to update your local Mongo database to have the 
+`"restricted-word"` role assigned.
+
+#### Assignment of the role can be done by following these steps:
+* Connect to the Mongo database using a client such as MongoDB Compass or the Mongo shell.
+* Inspect the `account.admin_permissions` collection to find the `entra-group-id` for a group that has the 
+`/admin/restricted-word` permission. Copy this `entra-group-id` value.
+* Navigate to the `account.users` collection in the Mongo database.
+* Find the user document corresponding to your CH login identity (e.g. `jbloggs@companieshouse.gov.uk`) and add/update 
+the `roles` array to include the `entra-group-id`.
+* Be sure to also set/add the `admin_user` field to `true` for your user document.
+* You will likely need to restart the `chs-dev` environment for the changes to take effect.
+
+Further information regarding user authentication and MS Entra can be found in the [confluence documentation](https://companieshouse.atlassian.net/wiki/spaces/DEV/pages/5462196391/Migrating+internal+user+authentication+to+Entra+SSO).
+
+Other general information regarding the Restricted Word Web application can be found here [confluence documentation](https://companieshouse.atlassian.net/wiki/spaces/IncVal/pages/1104085245/Development).
 
 ### How to Build
-* Enable local development by running `docker_chs development enable restricted-word-web`.
-* After you make changes to the code, run `docker_chs reload restricted-word-web`.
+* Enable local development by running `chs-dev development enable restricted-word-web`.
+* After you make changes to the code, run `chs-dev reload -f restricted-word-web`.
 
 ### How to view logs
-* Run `docker_chs logs restricted-word-web`
+* Run `chs-dev logs -f restricted-word-web`
 * Or use an alternative logs viewer such as Docker Desktop or Dockermon.
 
 ## Testing

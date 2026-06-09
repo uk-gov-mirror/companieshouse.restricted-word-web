@@ -1,8 +1,8 @@
-import chai, { expect } from "chai";
-import sinon, { SinonStubbedInstance } from "sinon";
+import chai, {expect} from "chai";
+import sinon, {SinonStubbedInstance} from "sinon";
 
 import ApplicationLogger from "@companieshouse/structured-logging-node/lib/ApplicationLogger";
-import { AxiosInstance } from "axios";
+import {AxiosInstance} from "axios";
 import RestrictedWordApiClient from "../../src/clients/RestrictedWordApiClient";
 import RestrictedWordDto from "../../src/clients/RestrictedWordDto";
 import RestrictedWordFilterDto from "../../src/clients/RestrictedWordFilterDto";
@@ -11,7 +11,7 @@ import RestrictedWordViewModel from "../../src/clients/RestrictedWordViewModel";
 import axiosInstance from "../../src/clients/axiosInstance";
 import chaiAsPromised from "chai-as-promised";
 import sinonChai from "sinon-chai";
-import { UpdateFields } from "../../src/enums";
+import {UpdateFields} from "../../src/enums";
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -27,7 +27,7 @@ describe("RestrictedWordApiClient", function () {
 
     const requireApiClient = function () {
 
-        const client = proxyquire("../../src/clients/RestrictedWordApiClient", {
+        return proxyquire("../../src/clients/RestrictedWordApiClient", {
             "./axiosInstance": mockAxiosInstance,
             "../config": {
                 applicationNamespace: "testNamespace",
@@ -39,8 +39,6 @@ describe("RestrictedWordApiClient", function () {
                 }
             }
         }).default;
-
-        return client;
     };
 
     const testErrorResponse = {
@@ -181,7 +179,10 @@ describe("RestrictedWordApiClient", function () {
                 super_restricted: true
             };
 
-            await apiClient.patchSuperRestrictedStatus({ ...testOptions, superRestricted: true }, UpdateFields.SUPER_RESTRICTED);
+            await apiClient.patchSuperRestrictedStatus({
+                ...testOptions,
+                superRestricted: true
+            }, UpdateFields.SUPER_RESTRICTED);
 
             expect(mockAxiosInstance.patch).to.have.been.calledWithExactly(`/word/${testId}`, expectedCallingObject);
 

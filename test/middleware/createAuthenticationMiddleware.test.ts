@@ -6,7 +6,6 @@ import { SessionKey } from "@companieshouse/node-session-handler/lib/session/key
 import { RequestHandler } from "express";
 import { SignInInfoKeys } from "@companieshouse/node-session-handler/lib/session/keys/SignInInfoKeys";
 import { UserProfileKeys } from "@companieshouse/node-session-handler/lib/session/keys/UserProfileKeys";
-import { expect } from "chai";
 
 import proxyquire from "proxyquire";
 import { Session } from "@companieshouse/node-session-handler";
@@ -75,21 +74,19 @@ describe("createAuthenticationMiddleware", function () {
 
         middleware(mockRequest, mockResponse, mockNext);
 
-        expect(mockResponse.redirect)
-            .to.have.been.calledOnceWithExactly(`/signin?return_to=/${mockConfig.urlPrefix}`);
+        sinon.assert.calledOnceWithExactly(mockResponse.redirect, `/signin?return_to=/${mockConfig.urlPrefix}`);
     });
 
-    it("redirects to signin if session exists but you are not signed in", function () {
+    it("redirects to sign-in if session exists but you are not signed in", function () {
 
         const mockRequest: any = createMockRequest();
 
         middleware(mockRequest, mockResponse, mockNext);
 
-        expect(mockResponse.redirect)
-            .to.have.been.calledOnceWithExactly(`/signin?return_to=/${mockConfig.urlPrefix}`);
+        sinon.assert.calledOnceWithExactly(mockResponse.redirect, `/signin?return_to=/${mockConfig.urlPrefix}`);
     });
 
-    it("redirects to signin if you are signed in but user profile is undefined", function () {
+    it("redirects to sign-in if you are signed in but user profile is undefined", function () {
 
         const mockRequest: any = createMockRequest({
             [SignInInfoKeys.SignedIn]: 1,
@@ -98,8 +95,7 @@ describe("createAuthenticationMiddleware", function () {
 
         middleware(mockRequest, mockResponse, mockNext);
 
-        expect(mockResponse.redirect)
-            .to.have.been.calledOnceWithExactly(`/signin?return_to=/${mockConfig.urlPrefix}`);
+        sinon.assert.calledOnceWithExactly(mockResponse.redirect, `/signin?return_to=/${mockConfig.urlPrefix}`);
     });
 
     it("calls next if you are signed in and have the correct permissions", function () {
@@ -115,8 +111,7 @@ describe("createAuthenticationMiddleware", function () {
 
         middleware(mockRequest, mockResponse, mockNext);
 
-        expect(mockNext)
-            .to.have.been.called.calledOnce;
+        sinon.assert.calledOnce(mockNext);
     });
 
     it("sends an error response if you are logged in and do not have correct permissions", function () {
@@ -133,11 +128,8 @@ describe("createAuthenticationMiddleware", function () {
 
         middleware(mockRequest, mockResponse, mockNext);
 
-        expect(mockResponse.status)
-            .to.have.been.calledOnceWithExactly(404);
-
-        expect(mockResponse.render)
-            .to.have.been.calledOnceWithExactly("404");
+        sinon.assert.calledOnceWithExactly(mockResponse.status, 404);
+        sinon.assert.calledOnceWithExactly(mockResponse.render, "404");
     });
 
     it("sends an error response if you are logged in and do not have the admin permission", function () {
@@ -153,11 +145,8 @@ describe("createAuthenticationMiddleware", function () {
 
         middleware(mockRequest, mockResponse, mockNext);
 
-        expect(mockResponse.status)
-            .to.have.been.calledOnceWithExactly(404);
-
-        expect(mockResponse.render)
-            .to.have.been.calledOnceWithExactly("404");
+        sinon.assert.calledOnceWithExactly(mockResponse.status, 404);
+        sinon.assert.calledOnceWithExactly(mockResponse.render, "404");
     });
 
     it("sends an error response if you are logged in and only have a child permission", function () {
@@ -173,11 +162,8 @@ describe("createAuthenticationMiddleware", function () {
 
         middleware(mockRequest, mockResponse, mockNext);
 
-        expect(mockResponse.status)
-            .to.have.been.calledOnceWithExactly(404);
-
-        expect(mockResponse.render)
-            .to.have.been.calledOnceWithExactly("404");
+        sinon.assert.calledOnceWithExactly(mockResponse.status, 404);
+        sinon.assert.calledOnceWithExactly(mockResponse.render, "404");
     });
 
     it("calls next and skips authentication if request is for the healthcheck url", function () {
@@ -188,13 +174,8 @@ describe("createAuthenticationMiddleware", function () {
 
         middleware(mockRequest, mockResponse, mockNext);
 
-        expect(mockNext)
-            .to.have.been.called.calledOnce;
-
-        expect(mockResponse.redirect)
-            .not.to.have.been.called;
-
-        expect(mockResponse.render)
-            .not.to.have.been.called;
+        sinon.assert.calledOnce(mockNext);
+        sinon.assert.notCalled(mockResponse.redirect);
+        sinon.assert.notCalled(mockResponse.render);
     });
 });

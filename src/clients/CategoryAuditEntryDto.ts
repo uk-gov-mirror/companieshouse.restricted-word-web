@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+ 
 interface CategoryAuditEntryDto {
     changed_by: string;
     changed_at: string;

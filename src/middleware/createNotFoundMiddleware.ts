@@ -4,7 +4,7 @@ const createNotFoundMiddleware = function (): RequestHandler {
 
     return (_request, response) => {
 
-        response.status(404); // eslint-disable-line @typescript-eslint/no-magic-numbers
+        response.status(404);  
 
         return response.render("404");
     };
