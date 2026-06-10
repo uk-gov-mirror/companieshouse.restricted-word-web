@@ -23,7 +23,12 @@
     "prettier": "prettier . --check",
     "prettier:fix": "prettier . --write",
     "analyse-code": "sonar-scanner",
-    "chs-dev": "nodemon --legacy-watch"
+    "chs-dev": "nodemon --legacy-watch",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts}": ["prettier --write"],
+    "*.{json}": ["prettier --write"]
   },
   "repository": {
     "type": "git",
