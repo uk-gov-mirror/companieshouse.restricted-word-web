@@ -14,25 +14,18 @@ import { UpdateFields } from "../enums";
 const logger = createLogger(config.applicationNamespace);
 
 class RestrictedWordController {
-
     private static getAndLogErrorList(request: Request, message: any, error: any) {
-
         let errorMessages = error.messages;
 
         if (error instanceof RestrictedWordError) {
-
             errorMessages = error.errors;
             for (const errorMessage of errorMessages) {
                 logger.errorRequest(request, errorMessage);
             }
-
         } else if (errorMessages === undefined) {
-
             errorMessages = [error.message];
             logger.errorRequest(request, error.message);
-
         } else {
-
             logger.errorRequest(request, `${message}: ${errorMessages.join(", ")}`);
         }
 
@@ -44,14 +37,13 @@ class RestrictedWordController {
     }
 
     public static async getAllWords(request: Request, response: Response) {
-
         logger.infoRequest(request, "Retrieving all words.");
 
         const filterWord = request.query.filterWord as string;
 
         const queryOptions: RestrictedWordQueryOptions = {
             startsWith: undefined,
-            contains: filterWord || undefined
+            contains: filterWord || undefined,
         };
 
         const superRestrictedStatus = request.query.filterSuperRestricted;
@@ -82,17 +74,18 @@ class RestrictedWordController {
         let results: RestrictedWordViewModel[];
 
         try {
-
             results = await restrictedWordApiClient.getAllRestrictedWords(queryOptions);
 
             logger.infoRequest(request, "Finished retrieving all words..");
-
         } catch (unknownError) {
-
-            const errorMessages = RestrictedWordController.getAndLogErrorList(request, "Error retrieving word list", unknownError);
+            const errorMessages = RestrictedWordController.getAndLogErrorList(
+                request,
+                "Error retrieving word list",
+                unknownError
+            );
 
             return response.render("all", {
-                errors: RestrictedWordController.mapErrors(errorMessages)
+                errors: RestrictedWordController.mapErrors(errorMessages),
             });
         }
 
@@ -127,9 +120,9 @@ class RestrictedWordController {
                 word: filterWord,
                 superRestricted: superRestrictedStatus,
                 status: deletedStatus,
-                categories: queryOptions.categories
+                categories: queryOptions.categories,
             },
-            pagination: pager.getPaginationOptions()
+            pagination: pager.getPaginationOptions(),
         });
     }
 
@@ -140,13 +133,12 @@ class RestrictedWordController {
         throw Error(`Provided url: (${url}) is not valid.`);
     }
 
-    private static isValidId(id:string) {
+    private static isValidId(id: string) {
         // Returns true if the 'id' is valid
         return /^[a-zA-Z0-9-]+$/.test(id);
     }
 
     public static async postUpdateWord(request: Request, response: Response) {
-
         const restrictedWordApiClient = new RestrictedWordApiClient(request.body.loggedInUserEmail);
 
         const id = request.body.id;
@@ -157,7 +149,7 @@ class RestrictedWordController {
         let redirectToUrl = `${config.baseUrl}/${config.urlPrefix}/word/${id}`;
 
         try {
-            if (!(RestrictedWordController.isValidId(id))) {
+            if (!RestrictedWordController.isValidId(id)) {
                 throw Error(`Provided id: (${id}) is not valid. Must be alpha numeric.`);
             }
 
@@ -166,39 +158,42 @@ class RestrictedWordController {
             const originalWord = await restrictedWordApiClient.getSingleRestrictedWord(id);
 
             if (categories.length === 0) {
-                throw new RestrictedWordError("Validation error",
-                    ["No data to update provided in the request, a new super restricted value and/or categories is required."]
-                );
-            } else if (superRestricted !== originalWord.superRestricted &&
-                !RestrictedWordController.haveCategoriesChanged(categories, originalWord.categories)) {
+                throw new RestrictedWordError("Validation error", [
+                    "No data to update provided in the request, a new super restricted value and/or categories is required.",
+                ]);
+            } else if (
+                superRestricted !== originalWord.superRestricted &&
+                !RestrictedWordController.haveCategoriesChanged(categories, originalWord.categories)
+            ) {
                 whichFieldUpdate = UpdateFields.SUPER_RESTRICTED;
                 redirectToUrl += `?setSuperRestricted=${superRestricted}`;
-            } else if (superRestricted === originalWord.superRestricted &&
-                RestrictedWordController.haveCategoriesChanged(categories, originalWord.categories)) {
+            } else if (
+                superRestricted === originalWord.superRestricted &&
+                RestrictedWordController.haveCategoriesChanged(categories, originalWord.categories)
+            ) {
                 whichFieldUpdate = UpdateFields.CATEGORIES;
 
                 if (!categoryChangeReason) {
-                    throw new RestrictedWordError("Validation error",
-                        ["A changed reason is required when updating categories."]
-                    );
+                    throw new RestrictedWordError("Validation error", [
+                        "A changed reason is required when updating categories.",
+                    ]);
                 }
 
                 redirectToUrl += "?setCategories=true";
-            } else if (superRestricted !== originalWord.superRestricted &&
-                RestrictedWordController.haveCategoriesChanged(categories, originalWord.categories)) {
-
+            } else if (
+                superRestricted !== originalWord.superRestricted &&
+                RestrictedWordController.haveCategoriesChanged(categories, originalWord.categories)
+            ) {
                 if (!categoryChangeReason) {
-                    throw new RestrictedWordError("Validation error",
-                        ["A changed reason is required when updating categories."]
-                    );
+                    throw new RestrictedWordError("Validation error", [
+                        "A changed reason is required when updating categories.",
+                    ]);
                 }
 
                 whichFieldUpdate = UpdateFields.BOTH;
                 redirectToUrl += "?setSuperRestricted=true&setCategories=true";
             } else {
-                throw new RestrictedWordError("Validation error",
-                    ["No changes have been made."]
-                );
+                throw new RestrictedWordError("Validation error", ["No changes have been made."]);
             }
 
             await restrictedWordApiClient.patchSuperRestrictedStatus(
@@ -207,16 +202,18 @@ class RestrictedWordController {
                     superRestricted: superRestricted,
                     categories: categories,
                     categoryChangeReason: categoryChangeReason,
-                    patchedBy: request.body.loggedInUserEmail
+                    patchedBy: request.body.loggedInUserEmail,
                 },
                 whichFieldUpdate
             );
 
             return RestrictedWordController.safeRedirect(redirectToUrl, response);
-
         } catch (unknownError) {
-
-            const errorMessages = RestrictedWordController.getAndLogErrorList(request, "Error retrieving word list", unknownError);
+            const errorMessages = RestrictedWordController.getAndLogErrorList(
+                request,
+                "Error retrieving word list",
+                unknownError
+            );
             const word = await restrictedWordApiClient.getSingleRestrictedWord(id);
 
             return response.render("word", {
@@ -224,19 +221,21 @@ class RestrictedWordController {
                 getCategoriesListHtml: getCategoriesListHtml,
                 wordHistory: RestrictedWordController.mapWordHistory(word.superRestrictedAuditLog).slice().reverse(),
                 wordCategoryHistory: word.categoriesAuditLog.slice().reverse(),
-                errors: RestrictedWordController.mapErrors(errorMessages)
+                errors: RestrictedWordController.mapErrors(errorMessages),
             });
         }
     }
 
     private static haveCategoriesChanged(categories: string[], originalCategories: string[]) {
-        return categories.length !== originalCategories.length ||
+        return (
+            categories.length !== originalCategories.length ||
             categories.find(element => {
                 if (!originalCategories.includes(element)) {
                     return true;
                 }
                 return false;
-            });
+            })
+        );
     }
 
     public static async getWord(request: Request, response: Response) {
@@ -245,7 +244,6 @@ class RestrictedWordController {
         const restrictedWordApiClient = new RestrictedWordApiClient(request.body.loggedInUserEmail);
 
         try {
-
             const word = await restrictedWordApiClient.getSingleRestrictedWord(request.params.wordId);
 
             return response.render("word", {
@@ -254,27 +252,33 @@ class RestrictedWordController {
                 setSuperRestricted: request.query.setSuperRestricted,
                 setCategories: request.query.setCategories,
                 wordHistory: RestrictedWordController.mapWordHistory(word.superRestrictedAuditLog).slice().reverse(),
-                wordCategoryHistory: word.categoriesAuditLog.slice().reverse()
+                wordCategoryHistory: word.categoriesAuditLog.slice().reverse(),
             });
-
         } catch (unknownError) {
-
-            const errorMessages = RestrictedWordController.getAndLogErrorList(request, "Error retrieving word list", unknownError);
+            const errorMessages = RestrictedWordController.getAndLogErrorList(
+                request,
+                "Error retrieving word list",
+                unknownError
+            );
 
             return response.render("word", {
-                errors: RestrictedWordController.mapErrors(errorMessages)
+                errors: RestrictedWordController.mapErrors(errorMessages),
             });
         }
     }
 
     private static mapWordHistory(auditLog: AuditEntryViewModel[]) {
-        return auditLog.map(auditEntry => [{
-            text: auditEntry.changedAt
-        }, {
-            text: auditEntry.changedBy
-        }, {
-            text: auditEntry.newValue ? "Yes" : "No"
-        }]);
+        return auditLog.map(auditEntry => [
+            {
+                text: auditEntry.changedAt,
+            },
+            {
+                text: auditEntry.changedBy,
+            },
+            {
+                text: auditEntry.newValue ? "Yes" : "No",
+            },
+        ]);
     }
 
     public static getCreateNewWord(_request: Request, response: Response) {
@@ -282,7 +286,6 @@ class RestrictedWordController {
     }
 
     public static async postCreateNewWord(request: Request, response: Response) {
-
         const newWord = request.body.word;
         const createdReason = request.body.createdReason;
         const superRestricted = request.body.superRestricted === "true";
@@ -295,12 +298,14 @@ class RestrictedWordController {
         }
         const categories = request.body.categories;
 
-        logger.infoRequest(request, `Attempting to create new word "${newWord}" with super restricted "${superRestricted}".`);
+        logger.infoRequest(
+            request,
+            `Attempting to create new word "${newWord}" with super restricted "${superRestricted}".`
+        );
 
         const restrictedWordApiClient = new RestrictedWordApiClient(request.body.loggedInUserEmail);
 
         try {
-
             const errorMessages = [];
 
             if (!newWord) {
@@ -319,8 +324,13 @@ class RestrictedWordController {
                 throw new RestrictedWordError("Validation error when creating a word", errorMessages);
             }
 
-            await restrictedWordApiClient.createRestrictedWord(newWord, createdReason, categories, superRestricted, deleteConflicting);
-
+            await restrictedWordApiClient.createRestrictedWord(
+                newWord,
+                createdReason,
+                categories,
+                superRestricted,
+                deleteConflicting
+            );
         } catch (unknownError: any) {
             if (unknownError.conflictingWords) {
                 return response.render("add-new-word", {
@@ -329,17 +339,21 @@ class RestrictedWordController {
                     categories: categories,
                     superRestricted: superRestricted,
                     hasConflicting: true,
-                    conflictingWords: unknownError.conflictingWords
+                    conflictingWords: unknownError.conflictingWords,
                 });
             }
 
-            const errorMessages = RestrictedWordController.getAndLogErrorList(request, `Error creating new word "${newWord}"`, unknownError);
+            const errorMessages = RestrictedWordController.getAndLogErrorList(
+                request,
+                `Error creating new word "${newWord}"`,
+                unknownError
+            );
 
             return response.render("add-new-word", {
                 word: newWord,
                 createdReason: createdReason,
                 superRestricted: superRestricted,
-                errors: RestrictedWordController.mapErrors(errorMessages)
+                errors: RestrictedWordController.mapErrors(errorMessages),
             });
         }
 
@@ -349,30 +363,31 @@ class RestrictedWordController {
     }
 
     public static getDeleteWord(request: Request, response: Response) {
-
         const wordId = request.query.id;
         const word = request.query.word;
 
         let errorMessages: any[] = [];
 
         if (wordId === undefined) {
-            errorMessages = errorMessages
-                .concat(RestrictedWordController.getAndLogErrorList(request, "", new Error("Id required to delete word")));
+            errorMessages = errorMessages.concat(
+                RestrictedWordController.getAndLogErrorList(request, "", new Error("Id required to delete word"))
+            );
         }
 
         if (word === undefined) {
-            errorMessages = errorMessages.concat(RestrictedWordController.getAndLogErrorList(request, "", new Error("Word required to delete word")));
+            errorMessages = errorMessages.concat(
+                RestrictedWordController.getAndLogErrorList(request, "", new Error("Word required to delete word"))
+            );
         }
 
         return response.render("delete-word", {
             id: wordId,
             word: word,
-            errors: RestrictedWordController.mapErrors(errorMessages)
+            errors: RestrictedWordController.mapErrors(errorMessages),
         });
     }
 
     public static async postDeleteWord(request: Request, response: Response) {
-
         const wordId = request.body.id;
         const word = request.body.word;
         const deletedReason = request.body.deletedReason;
@@ -382,7 +397,6 @@ class RestrictedWordController {
         const restrictedWordApiClient = new RestrictedWordApiClient(request.body.loggedInUserEmail);
 
         try {
-
             if (!wordId) {
                 throw new Error("Id required to delete word");
             }
@@ -396,16 +410,18 @@ class RestrictedWordController {
             }
 
             await restrictedWordApiClient.deleteRestrictedWord(wordId, deletedReason);
-
         } catch (unknownError) {
-
-            const errorMessages = RestrictedWordController.getAndLogErrorList(request, `Error deleting "${word}" with id "${wordId}"`, unknownError);
+            const errorMessages = RestrictedWordController.getAndLogErrorList(
+                request,
+                `Error deleting "${word}" with id "${wordId}"`,
+                unknownError
+            );
 
             return response.render("delete-word", {
                 id: wordId,
                 word: word,
                 deletedReason: deletedReason,
-                errors: RestrictedWordController.mapErrors(errorMessages)
+                errors: RestrictedWordController.mapErrors(errorMessages),
             });
         }
 

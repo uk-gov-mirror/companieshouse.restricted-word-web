@@ -1,4 +1,3 @@
- 
 interface AuditEntryDto {
     changed_by: string;
     changed_at: string;

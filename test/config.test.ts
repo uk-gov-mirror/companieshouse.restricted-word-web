@@ -4,13 +4,11 @@ import { expect } from "chai";
 const proxyquire = require("proxyquire").noCallThru();
 
 describe("config", function () {
-
     const getFreshConfig = function (): ApplicationConfiguration {
         return proxyquire("../src/config", {}).default;
     };
 
     it("provides a proxy object if HTTPS_PROXY is defined", function () {
-
         process.env.HTTPS_PROXY = "https://myproxy:9001";
 
         const config = getFreshConfig();
@@ -21,7 +19,6 @@ describe("config", function () {
     });
 
     it("doesn't provide a proxy if environment variable is undefined", function () {
-
         delete process.env.HTTPS_PROXY;
         const config = getFreshConfig();
 
@@ -29,7 +26,6 @@ describe("config", function () {
     });
 
     it("defaults to development if NODE_ENV is undefined", function () {
-
         delete process.env.NODE_ENV;
         const config = getFreshConfig();
 
@@ -37,7 +33,6 @@ describe("config", function () {
     });
 
     it("reads NODE_ENV if it exists", function () {
-
         process.env.NODE_ENV = "production";
         const config = getFreshConfig();
 

@@ -9,9 +9,7 @@ import { createLogger } from "@companieshouse/structured-logging-node";
 const logger = createLogger(config.applicationNamespace);
 
 const createAuthenticationMiddleware = function (): RequestHandler {
-
-    return (request: Request, response: Response, next : NextFunction) => {
-
+    return (request: Request, response: Response, next: NextFunction) => {
         if (request.originalUrl === `/${config.urlPrefix}/healthcheck`) {
             logger.debug("/healthcheck endpoint called, skipping authentication.");
             return next();
@@ -20,12 +18,10 @@ const createAuthenticationMiddleware = function (): RequestHandler {
         const signInInfo: ISignInInfo | undefined = request.session?.data[SessionKey.SignInInfo];
 
         if (signInInfo !== undefined) {
-
             const signedIn = signInInfo[SignInInfoKeys.SignedIn] === 1;
             const userInfo = signInInfo[SignInInfoKeys.UserProfile];
 
             if (signedIn && userInfo !== undefined) {
-
                 const permissions = userInfo[UserProfileKeys.Permissions];
 
                 // Not optimal, awaiting api with request.session.email or similar
@@ -39,9 +35,12 @@ const createAuthenticationMiddleware = function (): RequestHandler {
                 if (permissions !== undefined && permissions["/admin/restricted-word"] === 1) {
                     return next();
                 } else {
-                    logger.infoRequest(request, `Signed in user (${request.body.loggedInUserEmail}) does not have the correct permissions`);
+                    logger.infoRequest(
+                        request,
+                        `Signed in user (${request.body.loggedInUserEmail}) does not have the correct permissions`
+                    );
 
-                    response.status(404);  
+                    response.status(404);
 
                     return response.render("404");
                 }

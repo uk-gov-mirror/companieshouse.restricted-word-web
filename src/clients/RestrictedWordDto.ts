@@ -1,11 +1,10 @@
 import AuditEntryDto from "./AuditEntryDto";
 import CategoryAuditEntryDto from "./CategoryAuditEntryDto";
 
- 
 interface RestrictedWordDto {
     id: string;
     full_word: string;
-    categories: string[],
+    categories: string[];
     created_by: string;
     created_reason: string;
     deleted_by: string;
