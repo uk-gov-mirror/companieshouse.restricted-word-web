@@ -20,23 +20,17 @@ class RestrictedWordApiClient {
     }
 
     private handleErrors(error: any) {
-        const handledError: any = {};
+        const { errors, conflicting_words } = error.response?.data ?? {};
 
-        if (
-            error.response &&
-            error.response.data &&
-            (error.response.data.errors || error.response.data.conflicting_words)
-        ) {
-            handledError.messages = error.response.data.errors;
-            handledError.conflictingWords = error.response.data.conflicting_words;
-
-            return handledError;
+        if (errors || conflicting_words) {
+            return {
+                messages: errors,
+                conflictingWords: conflicting_words,
+            };
         }
 
         this._logger.error(error.message);
-        handledError.messages = ["An unknown error has occurred."];
-
-        return handledError;
+        return { messages: ["An unknown error has occurred."] };
     }
 
     private static getUsernameFromEmail(email: string): string {
