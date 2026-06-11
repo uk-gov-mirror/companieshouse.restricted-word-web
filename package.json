@@ -27,8 +27,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts}": ["prettier --write"],
-    "*.{json}": ["prettier --write"]
+    "*.{ts,json}": ["prettier --write"]
   },
   "repository": {
     "type": "git",
