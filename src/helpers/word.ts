@@ -1,16 +1,28 @@
 const mapIdToCategory: Record<string, string[]> = {
     restricted: ["Restricted", "Restricted", "govuk-tag govuk-tag--red"],
-    "criminal-fraudulent-purposes": ["Names for criminal / fraudulent purposes", "Crimes/Fraud", "govuk-tag govuk-tag--blue"],
-    "international-orgs-foreign-gov-depts": ["International organisations and foreign government departments", "Int'l orgs/govts", "govuk-tag govuk-tag--green"],
-    "prev-subjected-to-direction-to-change": ["Names previously subjected to a direction to change them", "Dir. to change", "govuk-tag govuk-tag--yellow"]
+    "criminal-fraudulent-purposes": [
+        "Names for criminal / fraudulent purposes",
+        "Crimes/Fraud",
+        "govuk-tag govuk-tag--blue",
+    ],
+    "international-orgs-foreign-gov-depts": [
+        "International organisations and foreign government departments",
+        "Int'l orgs/govts",
+        "govuk-tag govuk-tag--green",
+    ],
+    "prev-subjected-to-direction-to-change": [
+        "Names previously subjected to a direction to change them",
+        "Dir. to change",
+        "govuk-tag govuk-tag--yellow",
+    ],
 };
 
 const htmlEscapeMap: Record<string, string> = {
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
-    "\"": "&quot;",
-    "'": "&#39;"
+    '"': "&quot;",
+    "'": "&#39;",
 };
 
 function getCategoriesListHtml(categories: string[], mappedCategoryOverride?: Record<string, string[]>): string {
@@ -39,7 +51,7 @@ function getCategoriesListHtml(categories: string[], mappedCategoryOverride?: Re
 }
 
 function getCategoriesList(categories: string | string[] | undefined) {
-    return typeof categories === "string" ? [categories] : categories ?? [];
+    return typeof categories === "string" ? [categories] : (categories ?? []);
 }
 
 export { getCategoriesListHtml, getCategoriesList };

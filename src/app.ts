@@ -16,12 +16,16 @@ import csrfErrorHandler from "./middleware/createCsrfErrorMiddleware";
 
 const logger = createLogger(config.applicationNamespace);
 const sessionStore = new SessionStore(new Redis(`redis://${config.session.cacheServer}`));
-const cookieConfig: CookieConfig = { cookieName: config.session.cookieName, cookieSecret: config.session.cookieSecret, cookieDomain: config.session.cookieDomain };
+const cookieConfig: CookieConfig = {
+    cookieName: config.session.cookieName,
+    cookieSecret: config.session.cookieSecret,
+    cookieDomain: config.session.cookieDomain,
+};
 const sessionMiddleware = SessionMiddleware(cookieConfig, sessionStore);
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
     sessionStore,
     enabled: true,
-    sessionCookieName: config.session.cookieName
+    sessionCookieName: config.session.cookieName,
 });
 
 const app = express();
@@ -29,7 +33,7 @@ const app = express();
 const nunjucksConfig: ConfigureOptions = {
     autoescape: true,
     noCache: false,
-    express: app
+    express: app,
 };
 
 if (config.env === "development") {
@@ -39,12 +43,15 @@ if (config.env === "development") {
 }
 
 nunjucks
-    .configure([
-        "dist/views",
-        "node_modules/govuk-frontend/",
-        "node_modules/govuk-frontend/components/",
-        "node_modules/@companieshouse/"
-    ], nunjucksConfig)
+    .configure(
+        [
+            "dist/views",
+            "node_modules/govuk-frontend/",
+            "node_modules/govuk-frontend/components/",
+            "node_modules/@companieshouse/",
+        ],
+        nunjucksConfig
+    )
     .addGlobal("urlPrefix", config.urlPrefix);
 
 app.set("view engine", "html");

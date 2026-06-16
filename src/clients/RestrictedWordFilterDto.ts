@@ -1,4 +1,3 @@
- 
 interface RestrictedWordFilterDto {
     starts_with?: string;
     contains?: string;

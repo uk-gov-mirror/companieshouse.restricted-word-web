@@ -12,26 +12,25 @@ const config: ApplicationConfiguration = {
         cookieName: process.env.COOKIE_NAME as string,
         cookieSecret: process.env.COOKIE_SECRET as string,
         cookieDomain: process.env.COOKIE_DOMAIN as string,
-        cacheServer: process.env.CACHE_SERVER as string
+        cacheServer: process.env.CACHE_SERVER as string,
     },
     applicationNamespace: "restricted-word-web",
     baseUrl: process.env.CHS_URL ?? "",
     otel: {
         traceExporterUrl: `${otlpEndpoint}/v1/traces`,
         metricsExporterUrl: `${otlpEndpoint}/v1/metrics`,
-        otelLogEnabled: process.env.OTEL_LOG_ENABLED === "true"
-    }
+        otelLogEnabled: process.env.OTEL_LOG_ENABLED === "true",
+    },
 };
 
 const httpsProxy = process.env.HTTPS_PROXY;
 
 if (httpsProxy) {
-
     const proxyUrl = new URL(httpsProxy);
 
     config.proxy = {
         host: proxyUrl.hostname,
-        port: parseInt(proxyUrl.port)
+        port: parseInt(proxyUrl.port),
     };
 }
 

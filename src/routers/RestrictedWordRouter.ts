@@ -3,10 +3,7 @@ import RestrictedWordController from "../controllers/RestrictedWordController";
 import express from "express";
 
 class RestrictedWordRouter {
-
     public static create() {
-
-         
         const router = express.Router();
 
         router.get("/", RestrictedWordController.getAllWords);

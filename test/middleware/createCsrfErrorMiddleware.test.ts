@@ -6,7 +6,7 @@ const createMockResponse = function () {
     return {
         redirect: sinon.stub(),
         status: sinon.stub(),
-        render: sinon.stub()
+        render: sinon.stub(),
     };
 };
 
@@ -15,7 +15,6 @@ const createMockNext = function () {
 };
 
 describe("createCsrfErrorMiddleware", function () {
-
     it("not a csrf error", function () {
         const error = new Error("Not a Csrf error");
         const response = createMockResponse();
@@ -38,7 +37,7 @@ describe("createCsrfErrorMiddleware", function () {
         sinon.assert.calledOnceWithExactly(response.status, 403);
         sinon.assert.notCalled(mockNext);
         sinon.assert.calledOnceWithExactly(response.render, "403", {
-            csrfErrors: true
+            csrfErrors: true,
         });
     });
 });

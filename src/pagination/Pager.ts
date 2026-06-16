@@ -1,7 +1,6 @@
 import PaginationOptions from "./PaginationOptions";
 
 class Pager<T> {
-
     private static readonly _defaultResultsPerPage = 30;
 
     private _resultsPerPage: number;
@@ -13,7 +12,6 @@ class Pager<T> {
     private _results: T[];
 
     public constructor(requestedPage: string | undefined, results: T[], resultsPerPage?: number) {
-
         this._resultsPerPage = resultsPerPage || Pager._defaultResultsPerPage;
 
         this._totalPages = Math.ceil(results.length / this._resultsPerPage);
@@ -29,13 +27,10 @@ class Pager<T> {
     }
 
     public getPaginationOptions(): PaginationOptions {
-
-        const startOfRangeOffset = (this._currentPage * this._resultsPerPage) - this._resultsPerPage;
+        const startOfRangeOffset = this._currentPage * this._resultsPerPage - this._resultsPerPage;
 
         const endOfRange = startOfRangeOffset + this._resultsPerPage;
-        const endOfPage = endOfRange < this._results.length ?
-            endOfRange :
-            this._results.length;
+        const endOfPage = endOfRange < this._results.length ? endOfRange : this._results.length;
 
         return {
             previousPage: this._currentPage - 1,
@@ -44,14 +39,15 @@ class Pager<T> {
             totalPages: this._totalPages,
             numResults: this._results.length,
             startOfPage: startOfRangeOffset + 1,
-            endOfPage: endOfPage
+            endOfPage: endOfPage,
         };
     }
 
     public pageResults(): T[] {
-
-        const pagedResults = this._results
-            .slice((this._currentPage - 1) * this._resultsPerPage, this._currentPage * this._resultsPerPage);
+        const pagedResults = this._results.slice(
+            (this._currentPage - 1) * this._resultsPerPage,
+            this._currentPage * this._resultsPerPage
+        );
 
         return pagedResults;
     }

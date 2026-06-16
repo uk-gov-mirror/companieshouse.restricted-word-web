@@ -8,5 +8,4 @@ interface PaginationOptions {
     endOfPage: number;
 }
 
- 
 export default PaginationOptions;

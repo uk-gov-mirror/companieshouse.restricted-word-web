@@ -88,3 +88,7 @@ Run `npm run test` or `npm run test:coverage` (to get a coverage report)
 
 The application is installed via the `restricted-word-web` Concourse pipeline.
 
+## Formatting & Linting
+
+This repo uses ESLint and Prettier for code linting and formatting, and are configured to run automatically via a pre-commit hook.
+You can by-pass the pre-commit hook using the `--no-verify` option in the `git` CLI.

@@ -7,7 +7,9 @@ describe("Category enum", function () {
     });
 
     it("returns international-orgs-foreign-gov-depts category name ", async function () {
-        expect(getCategoryName("international-orgs-foreign-gov-depts")).to.equal("International organisations and foreign government departments");
+        expect(getCategoryName("international-orgs-foreign-gov-depts")).to.equal(
+            "International organisations and foreign government departments"
+        );
     });
 
     it("returns criminal-fraudulent-purposes ", async function () {
@@ -15,6 +17,8 @@ describe("Category enum", function () {
     });
 
     it("returns Restricted ", async function () {
-        expect(getCategoryName("prev-subjected-to-direction-to-change")).to.equal("Names previously subjected to a direction to change them");
+        expect(getCategoryName("prev-subjected-to-direction-to-change")).to.equal(
+            "Names previously subjected to a direction to change them"
+        );
     });
 });

@@ -13,21 +13,18 @@ import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-node";
  */
 const traceExporter = new OTLPTraceExporter({
     url: config.otel?.traceExporterUrl,
-    headers: {}
+    headers: {},
 });
 const sdk = new NodeSDK({
-    spanProcessors: [
-        new BaggageSpanProcessor(ALLOW_ALL_BAGGAGE_KEYS),
-        new BatchSpanProcessor(traceExporter)
-    ],
+    spanProcessors: [new BaggageSpanProcessor(ALLOW_ALL_BAGGAGE_KEYS), new BatchSpanProcessor(traceExporter)],
 
     metricReader: new PeriodicExportingMetricReader({
         exporter: new OTLPMetricExporter({
             url: config.otel?.metricsExporterUrl,
-            headers: {}
-        })
+            headers: {},
+        }),
     }),
-    instrumentations: [getNodeAutoInstrumentations()]
+    instrumentations: [getNodeAutoInstrumentations()],
 });
 
 if (config.otel?.otelLogEnabled) {

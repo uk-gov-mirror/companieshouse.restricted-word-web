@@ -4,7 +4,7 @@ import CategoryAuditEntryViewModel from "./CategoryAuditEntryViewModel";
 interface RestrictedWordViewModel {
     id: string;
     word: string;
-    categories: string[],
+    categories: string[];
     createdBy: string;
     createdReason?: string;
     deletedBy?: string;
@@ -14,7 +14,7 @@ interface RestrictedWordViewModel {
     deletedAt?: string;
     deleted: boolean;
     superRestrictedAuditLog: AuditEntryViewModel[];
-    categoriesAuditLog: CategoryAuditEntryViewModel[]
+    categoriesAuditLog: CategoryAuditEntryViewModel[];
 }
 
 export default RestrictedWordViewModel;

@@ -7,7 +7,6 @@ let mockRequest: SubstituteOf<Request>;
 let mockResponse: SubstituteOf<Response>;
 
 describe("healthcheckController", function () {
-
     beforeEach(function () {
         mockRequest = SubstituteFactory.create<Request>();
         mockResponse = SubstituteFactory.create<Response>();
@@ -17,18 +16,14 @@ describe("healthcheckController", function () {
         it("returns a 200 response", function () {
             healthcheckController.get(mockRequest, mockResponse);
 
-            mockResponse
-                .received()
-                .status(200);
+            mockResponse.received().status(200);
         });
 
-        it("returns the message \"OK\"", function () {
+        it('returns the message "OK"', function () {
             mockResponse.status(Arg.any()).returns(mockResponse);
             healthcheckController.get(mockRequest, mockResponse);
 
-            mockResponse
-                .received()
-                .send("OK");
+            mockResponse.received().send("OK");
         });
     });
 });
