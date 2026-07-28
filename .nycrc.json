@@ -1,4 +1,17 @@
 {
+    "extension": [
+        ".ts"
+    ],
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "**/*.d.ts",
+        "test/**",
+        "dist/**",
+        "coverage/**",
+        "node_modules/**"
+    ],
     "reporter": [
         "lcov",
         "text-summary"
